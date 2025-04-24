@@ -18,9 +18,31 @@ def ask_openrouter(prompt):
         "messages": [{"role": "user", "content": prompt}]
     }
 
-    response = requests.post(url, headers=headers, json=data)
-    reply = response.json()['choices'][0]['message']['content']
-    return reply
+    try:
+        response = requests.post(url, headers=headers, json=data)
+        response.raise_for_status()  # Ensure a successful response
+        response_data = response.json()
+        
+        # Log the entire response to inspect it
+        print("Response JSON:", response_data)
+        
+        # Check if 'choices' key exists in the response
+        if 'choices' in response_data:
+            reply = response_data['choices'][0]['message']['content']
+        else:
+            reply = "Sorry, I couldn't find an answer for you at the moment."
+        
+        return reply
+    
+    except requests.exceptions.RequestException as e:
+        print(f"Request error: {e}")
+        return "Sorry, there was an error with the request. Please try again later."
+    except KeyError as e:
+        print(f"KeyError: {e}")
+        return "Sorry, something went wrong while processing the response. Please try again later."
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        return "An unexpected error occurred. Please try again later."
 
 def handle_message(update, context):
     user_input = update.message.text
