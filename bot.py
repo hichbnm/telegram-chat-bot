@@ -5,7 +5,7 @@ TELEGRAM_TOKEN = '7633719713:AAE3mDbewW9tqNp1h8ZB14PowQJKLsg-748'
 OPENROUTER_API_KEY = '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'
 
 def start(update, context):
-    update.message.reply_text("Hi! Ask me anything 🤖")
+    update.message.reply_text("Welcome to Hichem Bot! Ask me anything 🤖")
 
 def ask_openrouter(prompt):
     url = "https://openrouter.ai/api/v1/chat/completions"
